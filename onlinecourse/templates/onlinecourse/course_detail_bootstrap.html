@@ -48,6 +48,16 @@
                         <div class="card-header"><h5>Lesson {{lesson.order|add:1}}: {{lesson.title}}</h5></div>
                         <div class="card-body">{{lesson.content}}</div>
                     </div>
+                    <p>
+                        <a class="btn btn-primary btn-block" data-toggle="collapse" href="#collapse-{{ lesson.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ lesson.id }}">
+                          Start Exam
+                        </a>
+                      </p>
+                      <div class="collapse" id="collapse-{{ lesson.id }}">
+                        <div class="card card-body">
+                          
+                        </div>
+                      </div>
                 {% endfor %}
             </div>
             <!-- Task: show questions and choices -->
