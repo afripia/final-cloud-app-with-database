@@ -5,7 +5,7 @@ from .models import Course, Lesson, Instructor, Learner, Question, Choice
 # <HINT> Register QuestionInline and ChoiceInline classes here
 class ChoiceInline(admin.StackedInline):
     model = Choice 
-    extra = 1
+    extra = 5
 
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [ChoiceInline]

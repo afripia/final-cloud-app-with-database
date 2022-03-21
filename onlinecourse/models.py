@@ -51,7 +51,6 @@ class Learner(models.Model):
         return self.user.username + "," + \
                self.occupation
 
-
 # Course model
 class Course(models.Model):
     name = models.CharField(null=False, max_length=30, default='online course')
@@ -124,7 +123,7 @@ class Question(models.Model):
     # Other fields and methods you would like to design
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    question_text = models.CharField(max_length=255)
+    choice_text = models.CharField(max_length=255)
     is_correct = models.BooleanField(default=False)
 
 # <HINT> The submission model
