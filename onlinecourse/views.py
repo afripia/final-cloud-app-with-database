@@ -113,7 +113,12 @@ def submit(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     user = request.user
     enrollment = Enrollment.objects.filter(user=user, course=course)
+<<<<<<< HEAD
     submission = Submission(enrollment=enrollment)
+=======
+    submission = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,
+                                            password=password)
+>>>>>>> 3455af2b2858ed9c02a0f88a990c77afca858de5
 
 # <HINT> A example method to collect the selected choices from the exam form from the request object
 #def extract_answers(request):
