@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 # <HINT> Import any new Models here
 from .models import Course, Enrollment, Question, Choice, Submission
 from django.contrib.auth.models import User
@@ -112,13 +112,17 @@ def enroll(request, course_id):
 def submit(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     user = request.user
-    enrollment = Enrollment.objects.filter(user=user, course=course)
-<<<<<<< HEAD
-    submission = Submission(enrollment=enrollment)
-=======
-    submission = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,
-                                            password=password)
->>>>>>> 3455af2b2858ed9c02a0f88a990c77afca858de5
+    #enrollment = Enrollment.objects.filter(user__in=user, course__in=course)
+    num_results = Enrollment.objects.filter(user=user, course=course).count()
+    print(num_results)
+    #submission = Submission(enrollment=enrollment, choices=)
+    if request.method == 'POST' :
+        choicesList = [i for i in list(request.POST.items()) if i[0].startswith('choice_')]
+        if len(choicesList) >= 1 :
+            for key, value in choicesList :
+                print(value)
+
+        return HttpResponse("Hello World", content_type="text/plain")
 
 # <HINT> A example method to collect the selected choices from the exam form from the request object
 #def extract_answers(request):
