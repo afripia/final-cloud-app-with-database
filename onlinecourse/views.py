@@ -157,9 +157,16 @@ def show_exam_result(request, course_id, submission_id):
     context['grade'] = 0
     context['course'] = course
     choices = submission.choices.all()
+    questions = []
     for choice in choices:
         if choice.is_correct :
             context['grade'] = context['grade'] + choice.question.grade
+        else :
+            context['grade'] = context['grade'] - choice.question.grade
+
+        id = choice.question.id
+        if id not in questions:
+            questions.append({"id": id, answers: []})
 
     print(context['grade'])
 
