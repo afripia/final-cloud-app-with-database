@@ -10,8 +10,4 @@ applications:
       - route: mkdrmash.eu-de.cf.appdomain.cloud/static
     memory: 256MB
     buildpacks:
-<<<<<<< HEAD
       - staticfile_buildpack
-=======
-      - staticfile_buildpack
->>>>>>> 8d28a87a333836a8d9843ac862736c131dad5f86
