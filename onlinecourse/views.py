@@ -1,3 +1,4 @@
+import math
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 # <HINT> Import any new Models here
@@ -159,16 +160,20 @@ def show_exam_result(request, course_id, submission_id):
     choices = submission.choices.all()
     questions = []
     for choice in choices:
-        if choice.is_correct :
-            context['grade'] = context['grade'] + choice.question.grade
-        else :
-            context['grade'] = context['grade'] - choice.question.grade
-
         id = choice.question.id
-        if id not in questions:
-            questions.append({"id": id, answers: []})
+        if not any(d['id'] == id for d in questions) :
+            questions.append({"id": id, "answers": []})
 
-    print(context['grade'])
+        questionIndex = next((index for (index, d) in enumerate(questions) if d["id"] == id), None)
+        if choice.is_correct :
+            questions[questionIndex]["answers"].append(choice.id)
+
+    for question in questions:
+        questionObject = get_object_or_404(Question, pk=question['id'])
+        questionChoices = Choice.objects.filter(question=questionObject, is_correct=True)
+        context['grade'] = context['grade'] + (questionObject.grade / len(questionChoices)) * len(question['answers'])
+
+    print(round(context['grade']))
 
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
 
