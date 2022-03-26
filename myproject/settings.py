@@ -29,11 +29,7 @@ SECRET_KEY = 'aay0j_9b&ky3a7(8m8il+-1ud(scw12@w5!+5-=gsk6ynzi0ls'
 DEBUG = True
 
 # <HINT> add your cloud host here
-<<<<<<< HEAD
 ALLOWED_HOSTS = ['mkdrmash.eu-de.mybluemix.net']
-=======
-ALLOWED_HOSTS = ['mkdrmash.eu-de.cf.appdomain.cloud', 'mkdrmash.eu-de.mybluemix.net']
->>>>>>> 8d28a87a333836a8d9843ac862736c131dad5f86
 
 
 # Application definition
