@@ -165,7 +165,7 @@ def show_exam_result(request, course_id, submission_id):
     for choice in choices:
         id = choice.question.id
         if not any(d['question'].id == id for d in questions) :
-            questions.append({"question": choice.question, "correct_answers": [], "wrong_answers": []})
+            questions.append({"question": choice.question, "correct_answers": [], "wrong_answers": [], "choices": [], "choice_results": []})
 
         questionIndex = next((index for (index, d) in enumerate(questions) if d["question"].id == id), None)
         if choice.is_correct :
@@ -176,6 +176,33 @@ def show_exam_result(request, course_id, submission_id):
     for idx, question in enumerate(questions) :
         questionChoices = Choice.objects.filter(question=question['question'])
         questions[idx]['choices'] = questionChoices
+
+        for idxx, choice in enumerate(questions[idx]['choices']) :
+            if any(correct_answer == choice.id for correct_answer in question['correct_answers']) :
+                questions[idx]['choice_results'].append({
+                    "text": choice.choice_text,
+                    "correct": True,
+                    "selected": True
+                })
+            elif any(wrong_answer == choice.id for wrong_answer in question['wrong_answers']) :
+                questions[idx]['choice_results'].append({
+                    "choice_text": choice.choice_text,
+                    "correct": False,
+                    "selected": True
+                })
+            else :
+                if choice.is_correct :
+                    questions[idx]['choice_results'].append({
+                        "choice_text": choice.choice_text,
+                        "correct": True,
+                        "selected": False
+                    })
+                else :
+                    questions[idx]['choice_results'].append({
+                        "choice_text": choice.choice_text,
+                        "correct": False,
+                        "selected": False
+                    })
 
         questionObject = get_object_or_404(Question, pk=question['question'].id)
         questionObjectChoices = Choice.objects.filter(question=questionObject, is_correct=True)

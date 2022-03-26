@@ -54,7 +54,7 @@
                     <div class="card mt-1">
                         <div class="card-header"><h5>{{question.question.question_text}}</h5></div>
                         <div class="card-body">
-                            {% for choice in question.choices %}
+                            {% for choice in question.choice_results %}
                                 <p>{{ choice.choice_text }}</p>
                             {% endfor %}
                         </div>
