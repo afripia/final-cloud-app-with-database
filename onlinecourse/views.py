@@ -154,26 +154,32 @@ def extract_answers(request):
 def show_exam_result(request, course_id, submission_id):
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
+
     context = {}
     context['grade'] = 0
+    context['user'] = request.user
     context['course'] = course
+
     choices = submission.choices.all()
     questions = []
     for choice in choices:
         id = choice.question.id
         if not any(d['id'] == id for d in questions) :
-            questions.append({"id": id, "answers": []})
+            questions.append({"id": id, "correct_answers": [], "wrong_answers": []})
 
         questionIndex = next((index for (index, d) in enumerate(questions) if d["id"] == id), None)
         if choice.is_correct :
-            questions[questionIndex]["answers"].append(choice.id)
+            questions[questionIndex]["correct_answers"].append(choice.id)
+        else :
+            questions[questionIndex]["wrong_answers"].append(choice.id)
 
     for question in questions:
         questionObject = get_object_or_404(Question, pk=question['id'])
-        questionChoices = Choice.objects.filter(question=questionObject, is_correct=True)
-        context['grade'] = context['grade'] + (questionObject.grade / len(questionChoices)) * len(question['answers'])
+        questionObjectChoices = Choice.objects.filter(question=questionObject, is_correct=True)
+        gradePerChoice = (questionObject.grade / len(questionObjectChoices))
+        context['grade'] = context['grade'] + (gradePerChoice * len(question['correct_answers'])) - (gradePerChoice * len(question['wrong_answers']))
 
-    print(round(context['grade']))
+    context['grade'] = round(context['grade'])
 
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
 
