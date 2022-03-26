@@ -48,8 +48,19 @@
             <a class="btn btn-link text-danger" href="{% url 'onlinecourse:course_details' course.id %}">Re-test</a>
             {% endif %}
             <div class="card-columns-vertical mt-1">
-            <h5 class="">Exam results</h5>
-                <!--HINT Display exam results-->
+                <h5 class="">Exam results</h5>
+                <div class="card card-body">
+                    {% for question in questions %}
+                    <div class="card mt-1">
+                        <div class="card-header"><h5>{{question.question.question_text}}</h5></div>
+                        <div class="card-body">
+                            {% for choice in question.choices %}
+                                <p>{{ choice.choice_text }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         {% endif %}
     </div>
